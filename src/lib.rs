@@ -6,6 +6,8 @@ use ref_thread_local::RefThreadLocal;
 #[macro_use]
 extern crate ref_thread_local;
 
+const PERF: bool = false;
+
 ref_thread_local! {
     static managed WINDOW: i32 = get_window();
     static managed ANIMATION_CALLBACK: i32 = create_event_listener();
@@ -16,6 +18,9 @@ ref_thread_local! {
 
 #[no_mangle]
 pub fn callback(callback_handle: i32, e: i32) {
+    if PERF {
+        start_time("frame");
+    }
     let animation_callback = *ANIMATION_CALLBACK.borrow();
     let keydown_callback = *KEYDOWN_CALLBACK.borrow();
     let keyup_callback = *KEYUP_CALLBACK.borrow();
@@ -23,18 +28,18 @@ pub fn callback(callback_handle: i32, e: i32) {
     if callback_handle == animation_callback {
         run(game_state);
         request_animation_frame(*WINDOW.borrow(), animation_callback);
-        return;
     } else if callback_handle == keydown_callback {
         let k = keyboard_event_get_key_code(e);
-        key_down(game_state,k);
-        return;
-    }
-    else if callback_handle == keyup_callback {
+        key_down(game_state, k);
+    } else if callback_handle == keyup_callback {
         let k = keyboard_event_get_key_code(e);
-        key_up(game_state,k);
-        return;
+        key_up(game_state, k);
+    } else {
+        log(&format!("unhandled callback {:?}", callback_handle));
     }
-    log(&format!("unhandled callback {:?}",callback_handle))
+    if PERF {
+        end_time("frame");
+    }
 }
 
 #[no_mangle]
