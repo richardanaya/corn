@@ -1,5 +1,6 @@
 mod browser;
 mod game;
+mod rendering;
 use crate::browser::*;
 use crate::game::*;
 use ref_thread_local::RefThreadLocal;
@@ -44,6 +45,8 @@ pub fn callback(callback_handle: i32, e: i32) {
 
 #[no_mangle]
 pub fn main() -> () {
+    let game_state = &mut *GAME_STATE.borrow_mut();
+    init(game_state);
     request_animation_frame(*WINDOW.borrow(), *ANIMATION_CALLBACK.borrow());
     add_event_listener(*WINDOW.borrow(), "keydown", *KEYDOWN_CALLBACK.borrow());
     add_event_listener(*WINDOW.borrow(), "keyup", *KEYUP_CALLBACK.borrow());

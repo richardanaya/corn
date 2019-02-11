@@ -1,5 +1,33 @@
-<script src="https://unpkg.com/@webcomponents/webcomponentsjs@latest/webcomponents-loader.js"></script>
-<script src="https://unpkg.com/webidl-loader@latest/webidl-loader.js"></script>
-<webidl-loader
-  module="target/wasm32-unknown-unknown/release/corn.wasm"
-></webidl-loader>
+<html>
+  <head>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@latest/webcomponents-loader.js"></script>
+    <script src="https://unpkg.com/webidl-loader@0.0.13/webidl-loader.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: black;
+      }
+
+      #screen {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -320px;
+        margin-top: -240px;
+      }
+
+      img {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="corn.jpg" />
+    <canvas id="screen" width="640" height="480"></canvas>
+    <webidl-loader
+      module="target/wasm32-unknown-unknown/release/corn.wasm"
+    ></webidl-loader>
+  </body>
+</html>
