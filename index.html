@@ -1,7 +1,7 @@
 <html>
   <head>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@latest/webcomponents-loader.js"></script>
-    <script src="https://unpkg.com/webidl-loader@0.0.13/webidl-loader.js"></script>
+    <script src="https://unpkg.com/webidl-loader@0.0.14/webidl-loader.js"></script>
     <style>
       html,
       body {
@@ -24,7 +24,7 @@
     </style>
   </head>
   <body>
-    <img src="corn.jpg" />
+    <img id="corn" src="corn.png" />
     <canvas id="screen" width="640" height="480"></canvas>
     <webidl-loader
       module="target/wasm32-unknown-unknown/release/corn.wasm"

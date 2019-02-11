@@ -7,7 +7,7 @@ use ref_thread_local::RefThreadLocal;
 #[macro_use]
 extern crate ref_thread_local;
 
-const PERF: bool = false;
+const PERF: bool = true;
 
 ref_thread_local! {
     static managed WINDOW: i32 = get_window();
