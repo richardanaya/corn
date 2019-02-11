@@ -5,6 +5,8 @@ const SPRITE_WIDTH: i32 = 32;
 const SPRITE_HEIGHT: i32 = 32;
 const SPRITES_PER_ROW:i32  = 6;
 
+const GRASS:i32 = 38;
+
 pub struct GameState {
     sprites: i32,
 }
@@ -23,7 +25,7 @@ pub fn run(game_state: &mut GameState) {
     clear(0, 0, WIDTH, HEIGHT);
     for x in 0..(WIDTH/SPRITE_WIDTH) {
         for y in 0..(HEIGHT/SPRITE_HEIGHT) {
-            draw_sprite(game_state,1,x*SPRITE_WIDTH,y*SPRITE_HEIGHT);
+            draw_sprite(game_state,GRASS,x*SPRITE_WIDTH,y*SPRITE_HEIGHT);
         }
     }
 }
