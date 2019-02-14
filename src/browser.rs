@@ -2,10 +2,10 @@ use std::ffi::CString;
 use std::os::raw::c_char;
 
 extern "C" {
-    fn console_log(start: *mut c_char, len: usize);
-    fn console_time(start: *mut c_char, len: usize);
-    fn console_timeEnd(start: *mut c_char, len: usize);
-    fn Document_querySelector(doc: i32, start: *mut c_char, len: usize) -> i32;
+    fn console_log(start: *mut c_char);
+    fn console_time(start: *mut c_char);
+    fn console_timeEnd(start: *mut c_char);
+    fn Document_querySelector(doc: i32, start: *mut c_char) -> i32;
     fn global_createEventListener() -> i32;
     fn global_getWindow() -> i32;
     fn Window_requestAnimationFrame(win: i32, callback: i32);
@@ -13,34 +13,27 @@ extern "C" {
     fn EventTarget_addEventListener(
         win: i32,
         type_start: *mut c_char,
-        type_len: usize,
         callback: i32,
     );
     fn KeyboardEvent_get_keyCode(ev: i32) -> i32;
-    fn HTMLCanvasElement_getContext(ctx: i32, start: *mut c_char, len: usize) -> i32;
+    fn HTMLCanvasElement_getContext(ctx: i32, start: *mut c_char) -> i32;
 }
 
 pub fn log(msg: &str) {
-    let s = CString::new(msg).unwrap();
-    let l = msg.len();
     unsafe {
-        console_log(s.into_raw(), l);
+        console_log(CString::new(msg).unwrap().into_raw());
     }
 }
 
 pub fn start_time(msg: &str) {
-    let s = CString::new(msg).unwrap();
-    let l = msg.len();
     unsafe {
-        console_time(s.into_raw(), l);
+        console_time(CString::new(msg).unwrap().into_raw());
     }
 }
 
 pub fn end_time(msg: &str) {
-    let s = CString::new(msg).unwrap();
-    let l = msg.len();
     unsafe {
-        console_timeEnd(s.into_raw(), l);
+        console_timeEnd(CString::new(msg).unwrap().into_raw());
     }
 }
 
@@ -59,10 +52,8 @@ pub fn request_animation_frame(win: i32, callback: i32) {
 }
 
 pub fn add_event_listener(target: i32, event_name: &str, callback: i32) {
-    let s = CString::new(event_name).unwrap();
-    let l = event_name.len();
     unsafe {
-        EventTarget_addEventListener(target, s.into_raw(), l, callback);
+        EventTarget_addEventListener(target,  CString::new(event_name).unwrap().into_raw(), callback);
     }
 }
 
@@ -75,13 +66,9 @@ pub fn get_document(win: i32) -> i32 {
 }
 
 pub fn query_selector(doc: i32, query: &str) -> i32 {
-    let s = CString::new(query).unwrap();
-    let l = query.len();
-    unsafe { Document_querySelector(doc, s.into_raw(), l) }
+    unsafe { Document_querySelector(doc, CString::new(query).unwrap().into_raw()) }
 }
 
 pub fn get_context(canvas: i32, ctx: &str) -> i32 {
-    let s = CString::new(ctx).unwrap();
-    let l = ctx.len();
-    unsafe { HTMLCanvasElement_getContext(canvas, s.into_raw(), l) }
+    unsafe { HTMLCanvasElement_getContext(canvas, CString::new(ctx).unwrap().into_raw()) }
 }
